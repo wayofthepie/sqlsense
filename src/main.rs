@@ -1,5 +1,3 @@
-use std::{collections::HashMap, error::Error};
-
 use sqlparser::{
     ast::{
         ColumnDef,
@@ -10,6 +8,7 @@ use sqlparser::{
     dialect::GenericDialect,
     parser::Parser,
 };
+use std::{collections::HashMap, error::Error};
 
 fn main() -> Result<(), Box<dyn Error>> {
     println!("sql -> dot -> 🤩");
@@ -68,10 +67,9 @@ fn get_foreign_keys_for_columns(columns: &[ColumnDef]) -> Vec<&str> {
 
 #[cfg(test)]
 mod test {
-    use std::collections::HashMap;
-
     use crate::map_relationships;
     use sqlparser::{dialect::GenericDialect, parser::Parser};
+    use std::collections::HashMap;
 
     #[test]
     fn should_return_event_types_as_foreign_key() {

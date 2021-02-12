@@ -31,7 +31,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sqlviewer"
+name = "sqlsense"
 version = "0.1.0"
 dependencies = [
  "dot",
