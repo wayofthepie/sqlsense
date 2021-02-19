@@ -1,3 +1,4 @@
+mod dotify;
 use sqlparser::{
     ast::{
         ColumnDef,
@@ -8,20 +9,22 @@ use sqlparser::{
     dialect::GenericDialect,
     parser::Parser,
 };
+use std::fs::File;
 use std::{collections::HashMap, error::Error};
 
 fn main() -> Result<(), Box<dyn Error>> {
-    println!("sql -> dot -> 🤩");
     let args = std::env::args().skip(1).collect::<Vec<String>>();
-    if args.is_empty() {
-        return Err("You must pass the path to a sql file, thanks!".into());
+    if args.len() < 2 {
+        return Err("You must pass two args, the path to a sql file, and the path to the dot file to write, thanks!".into());
     }
     let path = args.get(0).unwrap();
+    let out = args.get(1).unwrap();
     let sql = std::fs::read_to_string(&path)?;
     let dialect = GenericDialect;
     let ast = Parser::parse_sql(&dialect, &sql).unwrap();
     let relationships = map_relationships(&ast);
-    println!("{:#?}", relationships);
+    let mut f = File::create(out).unwrap();
+    dotify::render_to(&relationships, &mut f);
     Ok(())
 }
 
